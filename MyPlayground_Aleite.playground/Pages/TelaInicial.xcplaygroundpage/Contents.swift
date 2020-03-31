@@ -26,7 +26,17 @@ class MyViewController : UIViewController {
         view.addSubview(buttonPlay)
         self.view = view
     }
+    
+    override func viewDidLoad() {
+        buttonPlay.addTarget(self, action: #selector(vc.touchedButton), for: .touchUpInside)
+    }
+    
+    @IBAction func touchedButton() {
+        print("aaaaa")
+    }
+    
 }
+
 // Present the view controller in the Live View window
 let vc = MyViewController(screenType: .mac, isPortrait: true)
 PlaygroundPage.current.liveView = vc.scale(to: 0.4)

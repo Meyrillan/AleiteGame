@@ -8,31 +8,80 @@ class MyViewController : UIViewController {
     let buttonPlay = UIButton()
     let imagePlay = UIImage(named: "ButtonPlay@2x.png")
     
-    override func loadView() {
+    let buttonPerfil = UIButton()
+    let imagePerfil = UIImage(named: "ButtonPerfil@2x.png")
     
+    let buttonDoacoes = UIButton()
+    let imageDoacoes = UIImage(named: "ButtonDoacoes@2x.png")
+    
+    let buttonAudio = UIButton()
+    let imageWithAudio = UIImage(named: "ButtonWithAudio@2x.png")
+    let imageNoAudio = UIImage(named: "ButtonNoAudio@2x.png")
+    
+    var toggleAudio = 1
+    
+    override func loadView() {
+        
         let view = UIView()
         view.backgroundColor = #colorLiteral(red: 1, green: 0.4862745098, blue: 0.5294117647, alpha: 1)
-        
-        //        let label = UILabel()
-        //        label.frame = CGRect(x: 150, y: 200, width: 200, height: 20)
-        //        label.text = "Hello World!"
-        //        label.textColor = .black
         
         buttonPlay.frame = CGRect(x: 570, y: 300, width: 300, height: 300)
         
         buttonPlay.setImage(imagePlay, for: .normal)
         
-        buttonPlay
+        buttonPerfil.frame = CGRect(x: 1360, y: 32, width: 48, height: 48)
+        
+        buttonPerfil.setImage(imagePerfil, for: .normal)
+        
+        buttonDoacoes.frame = CGRect(x: 1360, y: 104, width: 48, height: 48)
+        
+        buttonDoacoes.setImage(imageDoacoes, for: .normal)
+        
+        buttonAudio.frame = CGRect(x: 1360, y: 176, width: 48, height: 48)
+        
+        buttonAudio.setImage(imageWithAudio, for: .normal)
+        
         view.addSubview(buttonPlay)
+        view.addSubview(buttonPerfil)
+        view.addSubview(buttonDoacoes)
+        view.addSubview(buttonAudio)
+        
         self.view = view
     }
     
     override func viewDidLoad() {
-        buttonPlay.addTarget(self, action: #selector(vc.touchedButton), for: .touchUpInside)
+        buttonPlay.addTarget(self, action: #selector(vc.touchedButtonPlay), for: .touchUpInside)
+        
+        buttonPerfil.addTarget(self, action: #selector(vc.touchedButtonPerfil), for: .touchUpInside)
+        
+        buttonDoacoes.addTarget(self, action: #selector(vc.touchedButtonDoacoes), for: .touchUpInside)
+        
+        buttonAudio.addTarget(self, action: #selector(vc.touchedButtonAudio), for: .touchUpInside)
     }
     
-    @IBAction func touchedButton() {
-        print("aaaaa")
+    @IBAction func touchedButtonPlay() {
+        
+    }
+    
+    @IBAction func touchedButtonPerfil() {
+        
+    }
+    
+    @IBAction func touchedButtonDoacoes() {
+        
+    }
+    
+    @IBAction func touchedButtonAudio() {
+        if toggleAudio == 1 {
+//            player.play()
+            toggleAudio = 2
+            buttonAudio.setImage(imageNoAudio, for: .normal)
+            
+        } else {
+//            player.pause()
+            toggleAudio = 1
+            buttonAudio.setImage(imageWithAudio, for: .normal)
+        }
     }
     
 }

@@ -60,7 +60,7 @@ class MyViewController : UIViewController {
     }
     
     @IBAction func touchedButtonPlay() {
-        navigationController?.pushViewController(nivelUmViewController, animated: true)
+        navigationController?.pushViewController(NivelUmViewController(), animated: true)
     }
     
     @IBAction func touchedButtonPerfil() {
@@ -73,12 +73,12 @@ class MyViewController : UIViewController {
     
     @IBAction func touchedButtonAudio() {
         if toggleAudio == 1 {
-            //            player.play()
+            //            audio.play()
             toggleAudio = 2
             buttonAudio.setImage(imageNoAudio, for: .normal)
             
         } else {
-            //            player.pause()
+            //            audio.pause()
             toggleAudio = 1
             buttonAudio.setImage(imageWithAudio, for: .normal)
         }
@@ -87,7 +87,7 @@ class MyViewController : UIViewController {
 }
 
 let vc = MyViewController(screenType: .mac, isPortrait: true)
-let nivelUmViewController = NivelUmViewController(screenType: .mac, isPortrait: true)
+let nivelUmVC = NivelUmViewController(screenType: .mac, isPortrait: true)
 let navigation = UINavigationController(screenType: .mac, isPortrait: true)
 navigation.navigationBar.isHidden = true
 navigation.pushViewController(vc, animated: true)

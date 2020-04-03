@@ -3,6 +3,12 @@
 import UIKit
 import PlaygroundSupport
 
+let cfURL = Bundle.main.url(forResource: "SF-Pro-Rounded-Bold", withExtension: "otf")! as CFURL
+CTFontManagerRegisterFontsForURL(cfURL, CTFontManagerScope.process, nil)
+
+let cfURLRegular = Bundle.main.url(forResource: "SF-Pro-Rounded-Regular", withExtension: "otf")! as CFURL
+CTFontManagerRegisterFontsForURL(cfURLRegular, CTFontManagerScope.process, nil)
+
 class MyViewController : UIViewController {
     
     let buttonPlay = UIButton()
@@ -91,5 +97,5 @@ let nivelUmVC = NivelUmViewController(screenType: .mac, isPortrait: true)
 let navigation = UINavigationController(screenType: .mac, isPortrait: true)
 navigation.navigationBar.isHidden = true
 navigation.pushViewController(vc, animated: true)
-PlaygroundPage.current.liveView = navigation.scale(to: 0.4)
+PlaygroundPage.current.liveView = navigation.scale(to: 0.5)
 

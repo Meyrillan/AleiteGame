@@ -8,7 +8,14 @@ public class NivelUmViewController : UIViewController {
     let imageInicio = UIImage(named: "ButtonInicio@2x.png")
     let viewMissoes = UIImageView()
     let imageViewMissoes = UIImage(named: "ViewMissoes@2x.png")
+    let sfBoldMaior = UIFont(name: "SF-Pro-Rounded-Bold", size: 18)
+    let sfBoldMenor = UIFont(name: "SF-Pro-Rounded-Bold", size: 14)
+    let sfRegular = UIFont(name: "SF-Pro-Rounded-Regular", size: 14)
     let labelMissoes = UILabel()
+    let labelMissaoUm = UILabel()
+    let labelMissaoDois = UILabel()
+    let labelMissaoTres = UILabel()
+    let labelMissaoQuatro = UILabel()
     
     public override func loadView() {
         let view = UIView()
@@ -31,15 +38,23 @@ public class NivelUmViewController : UIViewController {
 //            }
 //        }
         
+        print(labelMissoes.font!)
+        
         labelMissoes.frame = CGRect(x: 36, y: 36, width: 68, height: 21)
         labelMissoes.text = "Missões"
-        labelMissoes.font = UIFont(name: "SF-Pro-Rounded-Bold", size: 18)
+        labelMissoes.font = sfBoldMaior
         labelMissoes.textColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        
+        labelMissaoUm.frame = CGRect(x: 36, y: 73, width: 235, height: 16)
+        labelMissaoUm.text = "Doe 1 frasco de leite para um hospital"
+        labelMissaoUm.font = sfRegular
+        labelMissaoUm.textColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         
         view.addSubview(cenarioView)
         view.addSubview(buttonInicio)
         view.addSubview(viewMissoes)
         view.addSubview(labelMissoes)
+        view.addSubview(labelMissaoUm)
         self.view = view
     }
     

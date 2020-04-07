@@ -1,9 +1,23 @@
 import Foundation
 import UIKit
+import PlaygroundSupport
+import SpriteKit
 
 public class NivelUmViewController : UIViewController {
     
-    let cenario = UIImage(named: "Cenário@2x.png")
+    
+    let viewSprite = SKView(frame: CGRect(x: 0, y: 0, width: 1440, height: 900))
+    let scene = SKScene(size: CGSize(width: 1440, height: 900))
+    
+    let cenario = SKSpriteNode(imageNamed: "Cenário@2x.png")
+    let armario = SKSpriteNode(imageNamed: "Armário@2x.png")
+    let balcao = SKSpriteNode(imageNamed: "Balcão@2x.png")
+    let freezer = SKSpriteNode(imageNamed: "FreezerSemLeite@2x.png")
+    let lavaLouca = SKSpriteNode(imageNamed: "LavaLouca@2x.png")
+    let filtroAgua = SKSpriteNode(imageNamed: "filtroAgua@2x.png")
+    let sofa = SKSpriteNode(imageNamed: "sofa@2x.png")
+    let centroSofa = SKSpriteNode(imageNamed: "centroSofa@2x.png")
+    
     let buttonInicio = UIButton()
     let imageInicio = UIImage(named: "ButtonInicio@2x.png")
     let viewMissoes = UIImageView()
@@ -49,9 +63,6 @@ public class NivelUmViewController : UIViewController {
         
         let view = UIView()
         view.backgroundColor = #colorLiteral(red: 0.2117647059, green: 0, blue: 0.3764705882, alpha: 1)
-        
-        let cenarioView = UIImageView(image: cenario)
-        cenarioView.frame = CGRect(x: 0, y: 0, width: 1440, height: 900)
         
         buttonInicio.frame = CGRect(x: 0, y:800, width: 100, height: 100)
         buttonInicio.setImage(imageInicio, for: .normal)
@@ -138,7 +149,7 @@ public class NivelUmViewController : UIViewController {
         labelBebeFeliz.font = sfRegularMaior
         labelBebeFeliz.textColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         
-        view.addSubview(cenarioView)
+        view.addSubview(viewSprite)
         view.addSubview(buttonInicio)
         view.addSubview(viewMissoes)
         view.addSubview(labelMissoes)
@@ -160,13 +171,58 @@ public class NivelUmViewController : UIViewController {
         view.addSubview(labelBebe)
         view.addSubview(labelBebeFeliz)
         
-        self.view = view
+        self.view = view 
     }
     
     public override func viewDidLoad() {
         buttonInicio.addTarget(self, action: #selector(NivelUmViewController.touchedButtonInicio), for: .touchUpInside)
         buttonDoar.addTarget(self, action: #selector(NivelUmViewController.touchedButtonDoar), for: .touchUpInside)
         
+        viewSprite.presentScene(scene)
+        scene.backgroundColor = .clear
+        viewSprite.allowsTransparency = true
+        viewSprite.backgroundColor = .clear
+        
+        cenario.setScale(1)
+        cenario.anchorPoint = CGPoint.zero
+        cenario.position = CGPoint(x: 0, y: 0)
+        
+        armario.setScale(1)
+//        armario.anchorPoint = CGPoint.zero
+        armario.position = CGPoint(x: 315, y: 373)
+        
+        balcao.setScale(1)
+//        balcao.anchorPoint = CGPoint.zero
+        balcao.position = CGPoint(x: 468, y: 356)
+        
+        freezer.setScale(1)
+//        freezer.anchorPoint = CGPoint.zero
+        freezer.position = CGPoint(x: 636, y: 217)
+        
+        lavaLouca.setScale(1)
+//        lavaLouca.anchorPoint = CGPoint.zero
+        lavaLouca.position = CGPoint(x: 714.96, y: 187)
+        
+        filtroAgua.setScale(1)
+//        filtroAgua.anchorPoint = CGPoint.zero
+        filtroAgua.position = CGPoint(x: 896.34, y: 262.22)
+        
+        sofa.setScale(1)
+//        sofa.anchorPoint = CGPoint.zero
+        sofa.position = CGPoint(x: 896.34, y: 262.22)
+        
+        centroSofa.setScale(1)
+//        centroSofa.anchorPoint = CGPoint.zero
+        centroSofa.position = CGPoint(x: 1184.66, y: 460)
+        
+        scene.addChild(cenario)
+        scene.addChild(armario)
+        scene.addChild(balcao)
+        scene.addChild(freezer)
+        scene.addChild(lavaLouca)
+        scene.addChild(filtroAgua)
+        scene.addChild(sofa)
+        scene.addChild(centroSofa)
     }
     
     @IBAction public func touchedButtonInicio() {

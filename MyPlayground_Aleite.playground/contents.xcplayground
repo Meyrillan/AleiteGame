@@ -3,5 +3,6 @@
     <pages>
         <page name='TelaInicial'/>
         <page name='NivelUm'/>
+        <page name='GameScene'/>
     </pages>
 </playground>

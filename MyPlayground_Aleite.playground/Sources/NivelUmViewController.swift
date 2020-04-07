@@ -187,39 +187,32 @@ public class NivelUmViewController : UIViewController {
         cenario.anchorPoint = CGPoint.zero
         cenario.position = CGPoint(x: 0, y: 0)
         
-        armario.setScale(1)
-//        armario.anchorPoint = CGPoint.zero
-        armario.position = CGPoint(x: 315, y: 373)
-        
-        balcao.setScale(1)
-//        balcao.anchorPoint = CGPoint.zero
-        balcao.position = CGPoint(x: 468, y: 356)
+        lavaLouca.setScale(1)
+        lavaLouca.position = scene.convertPoint(fromView: CGPoint(x: 787, y: 250))
         
         freezer.setScale(1)
-//        freezer.anchorPoint = CGPoint.zero
-        freezer.position = CGPoint(x: 636, y: 217)
+        freezer.position = scene.convertPoint(fromView: CGPoint(x: 680, y: 291))
         
-        lavaLouca.setScale(1)
-//        lavaLouca.anchorPoint = CGPoint.zero
-        lavaLouca.position = CGPoint(x: 714.96, y: 187)
+        balcao.setScale(1)
+        balcao.position = scene.convertPoint(fromView: CGPoint(x: 565, y: 422))
+        
+        armario.setScale(1)
+        armario.position = scene.convertPoint(fromView: CGPoint(x: 389, y: 457))
         
         filtroAgua.setScale(1)
-//        filtroAgua.anchorPoint = CGPoint.zero
-        filtroAgua.position = CGPoint(x: 896.34, y: 262.22)
+        filtroAgua.position = scene.convertPoint(fromView: CGPoint(x: 894, y: 256))
         
         sofa.setScale(1)
-//        sofa.anchorPoint = CGPoint.zero
-        sofa.position = CGPoint(x: 896.34, y: 262.22)
+        sofa.position = scene.convertPoint(fromView: CGPoint(x: 1040, y: 373))
         
         centroSofa.setScale(1)
-//        centroSofa.anchorPoint = CGPoint.zero
-        centroSofa.position = CGPoint(x: 1184.66, y: 460)
+        centroSofa.position = scene.convertPoint(fromView: CGPoint(x: 1247, y: 496))
         
         scene.addChild(cenario)
-        scene.addChild(armario)
-        scene.addChild(balcao)
-        scene.addChild(freezer)
         scene.addChild(lavaLouca)
+        scene.addChild(freezer)
+        scene.addChild(balcao)
+        scene.addChild(armario)
         scene.addChild(filtroAgua)
         scene.addChild(sofa)
         scene.addChild(centroSofa)

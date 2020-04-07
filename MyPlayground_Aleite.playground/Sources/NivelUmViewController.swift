@@ -8,15 +8,34 @@ public class NivelUmViewController : UIViewController {
     let imageInicio = UIImage(named: "ButtonInicio@2x.png")
     let viewMissoes = UIImageView()
     let imageViewMissoes = UIImage(named: "ViewMissoes@2x.png")
-    let sfBoldMaior = UIFont(name: "SFProRounded-Bold", size: 18)
-    let sfBoldMenor = UIFont(name: "SFProRounded-Bold", size: 14)
-    let sfRegular = UIFont(name: "SFProRounded-Regular", size: 14)
     let buttonDoar = UIButton()
     let labelMissoes = UILabel()
     let labelMissaoUm = UILabel()
     let labelMissaoDois = UILabel()
     let labelMissaoTres = UILabel()
     let labelMissaoQuatro = UILabel()
+    let viewBgPontuacao = UIImageView()
+    let imageBgViewPontuacao = UIImage(named: "ViewPontuacao@2x.png")
+    let viewPontuacao = UIImageView()
+    let imagePontuacaoVazia = UIImage(named: "PontuacaoVazia@2x.png")
+    let labelPontuacao = UILabel()
+    let viewBgReacoes = UIImageView()
+    let imageBgViewReacoes = UIImage(named: "viewReacoes@2x.png")
+    let viewReacoesMae = UIImageView()
+    let imageReacoesMae = UIImage(named: "ReacoesMae@2x.png")
+    let labelMae = UILabel()
+    let labelMaeFeliz = UILabel()
+    let labelMaeSeria = UILabel()
+    let labelMaeTriste = UILabel()
+    let viewReacoesBebe = UIImageView()
+    let imageReacoesBebe = UIImage(named: "ReacaoBebe@2x.png")
+    let labelBebe = UILabel()
+    let labelBebeFeliz = UILabel()
+    
+    let sfBoldMaior = UIFont(name: "SFProRounded-Bold", size: 18)
+    let sfBoldMenor = UIFont(name: "SFProRounded-Bold", size: 14)
+    let sfRegularMaior = UIFont(name: "SFProRounded-Regular", size: 18)
+    let sfRegular = UIFont(name: "SFProRounded-Regular", size: 14)
     
     public override func loadView() {
         
@@ -72,6 +91,53 @@ public class NivelUmViewController : UIViewController {
         labelMissaoQuatro.font = sfRegular
         labelMissaoQuatro.textColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         
+        viewBgPontuacao.frame = CGRect(x: 366, y: 0, width: 144, height: 217)
+        viewBgPontuacao.image = imageBgViewPontuacao
+        viewPontuacao.frame = CGRect(x: 403, y: 79.18, width: 70.96, height: 105.82)
+        viewPontuacao.image = imagePontuacaoVazia
+        
+        labelPontuacao.frame = CGRect(x: 392, y: 36, width: 92, height: 21)
+        labelPontuacao.text = "Pontuação"
+        labelPontuacao.font = sfBoldMaior
+        labelPontuacao.textColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        
+        viewBgReacoes.frame = CGRect(x: 1168.01, y: 0, width: 271.99, height: 220.88)
+        viewBgReacoes.image = imageBgViewReacoes
+        viewReacoesMae.frame = CGRect(x: 1204, y: 65, width: 200, height: 27)
+        viewReacoesMae.image = imageReacoesMae
+        viewReacoesBebe.frame = CGRect(x: 1204, y: 158, width: 68, height: 27)
+        viewReacoesBebe.image = imageReacoesBebe
+        
+        labelMae.frame = CGRect(x: 1211, y: 36, width: 35, height: 21)
+        labelMae.text = "Mãe"
+        labelMae.font = sfRegularMaior
+        labelMae.textColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        
+        labelMaeFeliz.frame = CGRect(x: 1241, y: 68, width: 11, height: 21)
+        labelMaeFeliz.text = "0"
+        labelMaeFeliz.font = sfRegularMaior
+        labelMaeFeliz.textColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        
+        labelMaeSeria.frame = CGRect(x: 1312, y: 68, width: 11, height: 21)
+        labelMaeSeria.text = "0"
+        labelMaeSeria.font = sfRegularMaior
+        labelMaeSeria.textColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        
+        labelMaeTriste.frame = CGRect(x: 1382, y: 68, width: 11, height: 21)
+        labelMaeTriste.text = "0"
+        labelMaeTriste.font = sfRegularMaior
+        labelMaeTriste.textColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        
+        labelBebe.frame = CGRect(x: 1211, y: 129, width: 154, height: 21)
+        labelBebe.text = "Bebês alimentados"
+        labelBebe.font = sfRegularMaior
+        labelBebe.textColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        
+        labelBebeFeliz.frame = CGRect(x: 1241, y: 161, width: 11, height: 21)
+        labelBebeFeliz.text = "0"
+        labelBebeFeliz.font = sfRegularMaior
+        labelBebeFeliz.textColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        
         view.addSubview(cenarioView)
         view.addSubview(buttonInicio)
         view.addSubview(viewMissoes)
@@ -81,6 +147,19 @@ public class NivelUmViewController : UIViewController {
         view.addSubview(labelMissaoDois)
         view.addSubview(labelMissaoTres)
         view.addSubview(labelMissaoQuatro)
+        view.addSubview(viewBgPontuacao)
+        view.addSubview(viewPontuacao)
+        view.addSubview(labelPontuacao)
+        view.addSubview(viewBgReacoes)
+        view.addSubview(viewReacoesMae)
+        view.addSubview(viewReacoesBebe)
+        view.addSubview(labelMae)
+        view.addSubview(labelMaeFeliz)
+        view.addSubview(labelMaeSeria)
+        view.addSubview(labelMaeTriste)
+        view.addSubview(labelBebe)
+        view.addSubview(labelBebeFeliz)
+        
         self.view = view
     }
     

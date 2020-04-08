@@ -213,7 +213,7 @@ public class NivelUmViewController : UIViewController {
         
         centroSofa.setScale(1)
         centroSofa.position = scene.convertPoint(fromView: CGPoint(x: 1247, y: 496))
-
+        
         scene.addChild(cenario)
         scene.addChild(lavaLouca)
         scene.addChild(freezer)
@@ -223,7 +223,13 @@ public class NivelUmViewController : UIViewController {
         scene.addChild(sofa)
         scene.addChild(centroSofa)
         buildAdmDireita()
-
+        
+    }
+    
+    public override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+        let touch = touches.first!
+        let location = touch.location(in: viewSprite)
+        moveAdm(location: location)
     }
     
     @IBAction public func touchedButtonInicio() {
@@ -235,28 +241,31 @@ public class NivelUmViewController : UIViewController {
     }
     
     @objc func handleTap(_ gesture: UIGestureRecognizer) {
-        animateAdmDireita()    }
+        //        animateAdmDireita()
+        moveAdm(location: gesture.location(in: viewSprite))
+        print(gesture.location(in: viewSprite))
+    }
     
     func buildAdmDireita() {
-//        let admDireitaAnimatedAtlas = SKTextureAtlas(named: "ADMDireita")
-//        var animacaoAdmDireita: [SKTexture] = []
-//
-//        let indices = [0,1,2,3]
-//        for i in indices {
-//            let admTextureName = "\(admDireita)\(i)"
-//            animacaoAdmDireita.append(admDireitaAnimatedAtlas.textureNamed(admTextureName))
-//        }
+        //        let admDireitaAnimatedAtlas = SKTextureAtlas(named: "ADMDireita")
+        //        var animacaoAdmDireita: [SKTexture] = []
+        //
+        //        let indices = [0,1,2,3]
+        //        for i in indices {
+        //            let admTextureName = "\(admDireita)\(i)"
+        //            animacaoAdmDireita.append(admDireitaAnimatedAtlas.textureNamed(admTextureName))
+        //        }
         
         let comecoNome = "ADM  - Direita"
         let índices = [0,1,2,3]
         var imagensAnimação: [SKTexture] = []
-
+        
         for i in índices {
             let umaPoseAdmDireita = SKTexture(imageNamed: "\(comecoNome)\(i)")
             imagensAnimação.append(umaPoseAdmDireita)
         }
         
-//        andandoFrames = animacaoAdmDireita
+        //        andandoFrames = animacaoAdmDireita
         andandoFrames = imagensAnimação
         
         let firstFrameTexture = andandoFrames[0]
@@ -264,18 +273,51 @@ public class NivelUmViewController : UIViewController {
         admDireita.setScale(1.2)
         admDireita.position = CGPoint(x: 700, y: 300)
         scene.addChild(admDireita)
-
+        
     }
     
     func animateAdmDireita() {
         
-        admDireita.run(SKAction.repeatForever(
-           SKAction.animate(with: andandoFrames, timePerFrame: 0.3, resize: false, restore: true)), withKey:"andandoParaDireita")
-//        let animação = SKAction.animate(with: andandoFrames, timePerFrame: 3.0/20.0)
-//        let animaçãoRepetida = SKAction.repeatForever(animação)
-//        admDireita.run(animaçãoRepetida)
-
+        admDireita.run(SKAction.repeatForever(SKAction.animate(with: andandoFrames, timePerFrame: 0.3, resize: false, restore: true)), withKey:"andandoParaDireita")
+        //        let animação = SKAction.animate(with: andandoFrames, timePerFrame: 3.0/20.0)
+        //        let animaçãoRepetida = SKAction.repeatForever(animação)
+        //        admDireita.run(animaçãoRepetida)
+        
     }
-
+    
+    func moveAdm(location: CGPoint) {
+        var multiplierForDirection: CGFloat
+        let admSpeed = viewSprite.frame.size.width / 9.0
+        
+        let moveDifference = scene.convertPoint(fromView: CGPoint(x: location.x - admDireita.position.x, y: location.y - admDireita.position.y))
+        let distanceToMove = sqrt(moveDifference.x * moveDifference.x + moveDifference.y * moveDifference.y)
+        
+        let moveDuration = distanceToMove / admSpeed
+        
+        if moveDifference.x < 0 {
+            multiplierForDirection = 1.0
+        } else {
+            multiplierForDirection = -1.0
+        }
+        admDireita.xScale = abs(admDireita.xScale) * multiplierForDirection
+        
+        if admDireita.action(forKey: "andandoParaDireita") == nil {
+            animateAdmDireita()
+        }
+        
+        let moveAction = SKAction.move(to: location, duration:(TimeInterval(moveDuration)))
+        
+        let doneAction = SKAction.run({ [weak self] in
+            self?.admMoveEnded()
+        })
+        
+        let moveActionWithDone = SKAction.sequence([moveAction, doneAction])
+        admDireita.run(moveActionWithDone, withKey:"admMoving")
+    }
+    
+    func admMoveEnded() {
+        admDireita.removeAllActions()
+    }
+    
 }
 

@@ -5,7 +5,6 @@ import SpriteKit
 
 public class NivelUmViewController : UIViewController {
     
-    
     let viewSprite = SKView(frame: CGRect(x: 0, y: 0, width: 1440, height: 900))
     let scene = SKScene(size: CGSize(width: 1440, height: 900))
     
@@ -208,6 +207,25 @@ public class NivelUmViewController : UIViewController {
         centroSofa.setScale(1)
         centroSofa.position = scene.convertPoint(fromView: CGPoint(x: 1247, y: 496))
         
+        let admDireitaTexture = SKTexture(imageNamed: "ADM  - Direita0@2x.png")
+        let admDireita = SKSpriteNode(texture: admDireitaTexture)
+        
+        let comecoNome = "ADM  - Direita"
+        let índices = [0,1,2,3]
+        var imagensAnimação: [SKTexture] = []
+        
+        for i in índices {
+            let umaPoseAdmDireita = SKTexture(imageNamed: "\(comecoNome)\(i)")
+            imagensAnimação.append(umaPoseAdmDireita)
+        }
+        
+        let animação = SKAction.animate(with: imagensAnimação, timePerFrame: 3.0/20.0)
+        let animaçãoRepetida = SKAction.repeatForever(animação)
+        admDireita.run(animaçãoRepetida)
+        
+        admDireita.setScale(1)
+        admDireita.position = CGPoint(x: 700, y: 300)
+        
         scene.addChild(cenario)
         scene.addChild(lavaLouca)
         scene.addChild(freezer)
@@ -216,6 +234,7 @@ public class NivelUmViewController : UIViewController {
         scene.addChild(filtroAgua)
         scene.addChild(sofa)
         scene.addChild(centroSofa)
+        scene.addChild(admDireita)
     }
     
     @IBAction public func touchedButtonInicio() {

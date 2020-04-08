@@ -8,6 +8,9 @@ public class NivelUmViewController : UIViewController {
     let viewSprite = SKView(frame: CGRect(x: 0, y: 0, width: 1440, height: 900))
     let scene = SKScene(size: CGSize(width: 1440, height: 900))
     
+    var admDireita = SKSpriteNode()
+    var andandoFrames: [SKTexture] = []
+    
     let cenario = SKSpriteNode(imageNamed: "Cenário@2x.png")
     let armario = SKSpriteNode(imageNamed: "Armário@2x.png")
     let balcao = SKSpriteNode(imageNamed: "Balcão@2x.png")
@@ -185,6 +188,10 @@ public class NivelUmViewController : UIViewController {
         cenario.setScale(1)
         cenario.anchorPoint = CGPoint.zero
         cenario.position = CGPoint(x: 0, y: 0)
+        // GestureRecognizer
+        cenario.isUserInteractionEnabled = true
+        let tapCenario = UITapGestureRecognizer(target: self, action: #selector(handleTap))
+        viewSprite.addGestureRecognizer(tapCenario)
         
         lavaLouca.setScale(1)
         lavaLouca.position = scene.convertPoint(fromView: CGPoint(x: 787, y: 250))
@@ -206,26 +213,7 @@ public class NivelUmViewController : UIViewController {
         
         centroSofa.setScale(1)
         centroSofa.position = scene.convertPoint(fromView: CGPoint(x: 1247, y: 496))
-        
-        let admDireitaTexture = SKTexture(imageNamed: "ADM  - Direita0@2x.png")
-        let admDireita = SKSpriteNode(texture: admDireitaTexture)
-        
-        let comecoNome = "ADM  - Direita"
-        let índices = [0,1,2,3]
-        var imagensAnimação: [SKTexture] = []
-        
-        for i in índices {
-            let umaPoseAdmDireita = SKTexture(imageNamed: "\(comecoNome)\(i)")
-            imagensAnimação.append(umaPoseAdmDireita)
-        }
-        
-        let animação = SKAction.animate(with: imagensAnimação, timePerFrame: 3.0/20.0)
-        let animaçãoRepetida = SKAction.repeatForever(animação)
-        admDireita.run(animaçãoRepetida)
-        
-        admDireita.setScale(1)
-        admDireita.position = CGPoint(x: 700, y: 300)
-        
+
         scene.addChild(cenario)
         scene.addChild(lavaLouca)
         scene.addChild(freezer)
@@ -234,7 +222,8 @@ public class NivelUmViewController : UIViewController {
         scene.addChild(filtroAgua)
         scene.addChild(sofa)
         scene.addChild(centroSofa)
-        scene.addChild(admDireita)
+        buildAdmDireita()
+
     }
     
     @IBAction public func touchedButtonInicio() {
@@ -245,4 +234,48 @@ public class NivelUmViewController : UIViewController {
         
     }
     
+    @objc func handleTap(_ gesture: UIGestureRecognizer) {
+        animateAdmDireita()    }
+    
+    func buildAdmDireita() {
+//        let admDireitaAnimatedAtlas = SKTextureAtlas(named: "ADMDireita")
+//        var animacaoAdmDireita: [SKTexture] = []
+//
+//        let indices = [0,1,2,3]
+//        for i in indices {
+//            let admTextureName = "\(admDireita)\(i)"
+//            animacaoAdmDireita.append(admDireitaAnimatedAtlas.textureNamed(admTextureName))
+//        }
+        
+        let comecoNome = "ADM  - Direita"
+        let índices = [0,1,2,3]
+        var imagensAnimação: [SKTexture] = []
+
+        for i in índices {
+            let umaPoseAdmDireita = SKTexture(imageNamed: "\(comecoNome)\(i)")
+            imagensAnimação.append(umaPoseAdmDireita)
+        }
+        
+//        andandoFrames = animacaoAdmDireita
+        andandoFrames = imagensAnimação
+        
+        let firstFrameTexture = andandoFrames[0]
+        admDireita = SKSpriteNode(texture: firstFrameTexture)
+        admDireita.setScale(1.2)
+        admDireita.position = CGPoint(x: 700, y: 300)
+        scene.addChild(admDireita)
+
+    }
+    
+    func animateAdmDireita() {
+        
+        admDireita.run(SKAction.repeatForever(
+           SKAction.animate(with: andandoFrames, timePerFrame: 0.3, resize: false, restore: true)), withKey:"andandoParaDireita")
+//        let animação = SKAction.animate(with: andandoFrames, timePerFrame: 3.0/20.0)
+//        let animaçãoRepetida = SKAction.repeatForever(animação)
+//        admDireita.run(animaçãoRepetida)
+
+    }
+
 }
+

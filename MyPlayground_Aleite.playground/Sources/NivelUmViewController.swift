@@ -226,11 +226,11 @@ public class NivelUmViewController : UIViewController {
         
     }
     
-    public override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
-        let touch = touches.first!
-        let location = touch.location(in: viewSprite)
-        moveAdm(location: location)
-    }
+//    public override func touchesEnded(_ touches: Set<UITouch>, with event: UIEvent?) {
+//        let touch = touches.first!
+//        let location = touch.location(in: viewSprite)
+//        moveAdm(location: location)
+//    }
     
     @IBAction public func touchedButtonInicio() {
         navigationController?.popViewController(animated: true)
@@ -242,8 +242,7 @@ public class NivelUmViewController : UIViewController {
     
     @objc func handleTap(_ gesture: UIGestureRecognizer) {
         //        animateAdmDireita()
-        moveAdm(location: gesture.location(in: viewSprite))
-        print(gesture.location(in: viewSprite))
+        moveAdm(location: scene.convertPoint(fromView: gesture.location(in: viewSprite)))
     }
     
     func buildAdmDireita() {
@@ -271,7 +270,7 @@ public class NivelUmViewController : UIViewController {
         let firstFrameTexture = andandoFrames[0]
         admDireita = SKSpriteNode(texture: firstFrameTexture)
         admDireita.setScale(1.2)
-        admDireita.position = CGPoint(x: 700, y: 300)
+        admDireita.position = scene.convertPoint(fromView: CGPoint(x: 700, y: 300))
         scene.addChild(admDireita)
         
     }
@@ -289,7 +288,7 @@ public class NivelUmViewController : UIViewController {
         var multiplierForDirection: CGFloat
         let admSpeed = viewSprite.frame.size.width / 9.0
         
-        let moveDifference = scene.convertPoint(fromView: CGPoint(x: location.x - admDireita.position.x, y: location.y - admDireita.position.y))
+        let moveDifference = CGPoint(x: location.x - admDireita.position.x, y: location.y - admDireita.position.y)
         let distanceToMove = sqrt(moveDifference.x * moveDifference.x + moveDifference.y * moveDifference.y)
         
         let moveDuration = distanceToMove / admSpeed

@@ -16,12 +16,22 @@ public class NivelUmViewController : UIViewController {
     var entregadorAndandoParaCima: [SKTexture] = []
     var entregadorAndandoParaBaixo: [SKTexture] = []
     
+    let maeView = UIImageView()
+    let bebeView = UIImageView()
+    
     var mudandoPontuacao: [UIImage] = []
     
+    let viewBgPopUp = UIImageView()
+    let viewPopUp = UIImageView()
+    let buttonContinuar = UIButton()
+    let labelParabens = UILabel()
+    let labelVoceConseguiu = UILabel()
+    
     let cenario = SKSpriteNode(imageNamed: "Cenário@2x.png")
+    let viewPiso = UIImageView()
     let armario = SKSpriteNode(imageNamed: "Armário@2x.png")
     let balcao = SKSpriteNode(imageNamed: "Balcão@2x.png")
-    let freezer = SKSpriteNode(imageNamed: "FreezerSemLeite@2x.png")
+    var freezer = SKSpriteNode()
     let viewFreezer = UIImageView()
     let lavaLouca = SKSpriteNode(imageNamed: "LavaLouca@2x.png")
     let filtroAgua = SKSpriteNode(imageNamed: "filtroAgua@2x.png")
@@ -169,9 +179,28 @@ public class NivelUmViewController : UIViewController {
         let tapFreezer = UITapGestureRecognizer(target: self, action: #selector(handleTapInFreezer))
         viewFreezer.addGestureRecognizer(tapFreezer)
         
+        viewPiso.frame = CGRect(x: 294.85, y: 233.53, width: 1040.81, height: 600.28)
+        viewPiso.image = UIImage(named: "PisoTransparente@2x.png")
+        viewPiso.isUserInteractionEnabled = true
+        let tapPiso = UITapGestureRecognizer(target: self, action: #selector(handleTapInPiso))
+        viewPiso.addGestureRecognizer(tapPiso)
+        
+        maeView.frame = CGRect(x: 920.23, y: 276.51, width: 50.34, height: 114.6)
+        maeView.image = UIImage(named: "Mãe@2x.png")
+        maeView.isUserInteractionEnabled = false
+        let tapM = UITapGestureRecognizer(target: self, action: #selector(handleTapInM))
+        maeView.addGestureRecognizer(tapM)
+        
+        bebeView.frame = CGRect(x: 929.38, y: 326.72, width: 23.29, height: 37.73)
+        bebeView.image = UIImage(named: "Bebê@2x.png")
+        bebeView.isUserInteractionEnabled = false
+        let tapB = UITapGestureRecognizer(target: self, action: #selector(handleTapInB))
+        bebeView.addGestureRecognizer(tapB)
+        
         pontuacao()
         
         view.addSubview(viewSprite)
+        view.addSubview(viewPiso)
         view.addSubview(viewFreezer)
         view.addSubview(buttonInicio)
         view.addSubview(viewMissoes)
@@ -193,6 +222,13 @@ public class NivelUmViewController : UIViewController {
         view.addSubview(labelMaeTriste)
         view.addSubview(labelBebe)
         view.addSubview(labelBebeFeliz)
+        view.addSubview(maeView)
+        view.addSubview(bebeView)
+        view.addSubview(viewBgPopUp)
+        view.addSubview(viewPopUp)
+        view.addSubview(labelParabens)
+        view.addSubview(labelVoceConseguiu)
+        view.addSubview(buttonContinuar)
         
         self.view = view 
     }
@@ -200,6 +236,7 @@ public class NivelUmViewController : UIViewController {
     public override func viewDidLoad() {
         buttonInicio.addTarget(self, action: #selector(NivelUmViewController.touchedButtonInicio), for: .touchUpInside)
         buttonDoar.addTarget(self, action: #selector(NivelUmViewController.touchedButtonDoar), for: .touchUpInside)
+        buttonContinuar.addTarget(self, action: #selector(NivelUmViewController.touchedButtonContinuar), for: .touchUpInside)
         
         viewSprite.presentScene(scene)
         scene.backgroundColor = .clear
@@ -209,10 +246,6 @@ public class NivelUmViewController : UIViewController {
         cenario.setScale(1)
         cenario.anchorPoint = CGPoint.zero
         cenario.position = CGPoint(x: 0, y: 0)
-        // GestureRecognizer
-        cenario.isUserInteractionEnabled = true
-        let tapCenario = UITapGestureRecognizer(target: self, action: #selector(handleTapInPiso))
-        viewSprite.addGestureRecognizer(tapCenario)
         
         lavaLouca.physicsBody = SKPhysicsBody(rectangleOf: lavaLouca.size)
         lavaLouca.physicsBody?.affectedByGravity = false
@@ -222,6 +255,8 @@ public class NivelUmViewController : UIViewController {
         lavaLouca.setScale(1)
         lavaLouca.position = scene.convertPoint(fromView: CGPoint(x: 787, y: 250))
         
+        freezer = SKSpriteNode(imageNamed: "FreezerComLeite@2x.png")
+
         freezer.physicsBody = SKPhysicsBody(rectangleOf: freezer.size)
         freezer.physicsBody?.affectedByGravity = false
         freezer.physicsBody?.allowsRotation = false
@@ -305,20 +340,26 @@ public class NivelUmViewController : UIViewController {
         
         labelMissaoUm.alpha = 0.5
         labelMissaoUm.font = sfRegular
-        
         labelMissaoDois.alpha = 1
         labelMissaoDois.font = sfBoldMenor
         
         moveEntregador(location: scene.convertPoint(fromView: CGPoint(x: 560, y: 605)))
         
         viewFreezer.isUserInteractionEnabled = true
-        
+                
+    }
+    
+    @IBAction public func touchedButtonContinuar() {
+        viewBgPopUp.isHidden = true
+        viewPopUp.isHidden = true
+        labelParabens.isHidden = true
+        labelVoceConseguiu.isHidden = true
+        buttonContinuar.isHidden = true
     }
     
     @objc func handleTapInFreezer(_ gesture: UIGestureRecognizer) {
         
         moveEntregador(location: scene.convertPoint(fromView: CGPoint(x: 713, y: 320)))
-        
         viewPontuacao.image = mudandoPontuacao[2]
         
         labelMissaoDois.alpha = 0.5
@@ -326,12 +367,76 @@ public class NivelUmViewController : UIViewController {
         
         labelMissaoTres.alpha = 1
         labelMissaoTres.font = sfBoldMenor
+        
+        if entregador.position == scene.convertPoint(fromView: CGPoint(x: 713, y: 320)) {
+            moveEntregador(location: scene.convertPoint(fromView: CGPoint(x: 1570, y: 950)))
+            moveAdm(location: scene.convertPoint(fromView: CGPoint(x: 730, y: 295)))
+            
+            maeView.isUserInteractionEnabled = true
+            
+            viewPontuacao.image = mudandoPontuacao[3]
+        }
+        
+        if entregador.position == scene.convertPoint(fromView: CGPoint(x: 1570, y: 950)) {
+            
+            entregador.removeAllActions()
+
+        }
 
     }
     
     @objc func handleTapInPiso(_ gesture: UIGestureRecognizer) {
-//        moveAdm(location: scene.convertPoint(fromView: gesture.location(in: viewSprite)))
-//        moveEntregador(location: scene.convertPoint(fromView: gesture.location(in: viewSprite)))
+        
+        moveAdm(location: scene.convertPoint(fromView: gesture.location(in: viewSprite)))
+        
+    }
+    
+    @objc func handleTapInM(_ gesture: UIGestureRecognizer) {
+        
+        moveAdm(location: scene.convertPoint(fromView: CGPoint(x: 870, y: 360)))
+        
+        viewPontuacao.image = mudandoPontuacao[4]
+        
+        bebeView.isUserInteractionEnabled = true
+        
+        labelMissaoTres.alpha = 0.5
+        labelMissaoTres.font = sfRegular
+        
+        labelMissaoQuatro.alpha = 1
+        labelMissaoQuatro.font = sfBoldMenor
+        
+    }
+    
+    @objc func handleTapInB(_ gesture: UIGestureRecognizer) {
+        
+        moveAdm(location: scene.convertPoint(fromView: CGPoint(x: 600, y: 450)))
+        
+        viewPontuacao.image = mudandoPontuacao[5]
+        
+        viewBgPopUp.frame = CGRect(x: 0, y: 0, width: 1440, height: 900)
+        viewBgPopUp.image = UIImage(named: "BgPopUp@2x.png")
+        
+        viewPopUp.frame = CGRect(x: 490, y: 327, width: 461, height: 246)
+        viewPopUp.image = UIImage(named: "PopUp@2x.png")
+        
+        labelParabens.frame = CGRect(x: 638, y: 363, width: 180, height: 50)
+        labelParabens.text = "Parabéns!"
+        labelParabens.font = UIFont(name: "SFProRounded-Bold", size: 36)
+        labelParabens.textColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+            
+        labelVoceConseguiu.frame = CGRect(x: 590, y: 407, width: 260, height: 70)
+        labelVoceConseguiu.text = "Você conseguiu terminar as missões! \n Continue a ajudar as mamães."
+        labelVoceConseguiu.numberOfLines = 2
+        labelVoceConseguiu.textAlignment = NSTextAlignment.center
+        labelVoceConseguiu.font = UIFont(name: "SFProRounded-Regular", size: 14)
+        labelVoceConseguiu.textColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
+        
+        buttonContinuar.frame = CGRect(x: 638, y: 481, width: 165, height: 56)
+        buttonContinuar.setTitle("Continuar", for: .normal)
+        buttonContinuar.titleLabel?.font = sfBoldMenor
+        buttonContinuar.backgroundColor = #colorLiteral(red: 1, green: 0.4862745098, blue: 0.5294117647, alpha: 1)
+        buttonContinuar.layer.cornerRadius = 14
+        
     }
     
     func pontuacao() {
@@ -366,7 +471,7 @@ public class NivelUmViewController : UIViewController {
         let firstFrameTexture = andandoFramesParaCima[0]
         adm = SKSpriteNode(texture: firstFrameTexture)
         adm.setScale(1.2)
-        adm.position = scene.convertPoint(fromView: CGPoint(x: 600, y: 450))
+        adm.position = scene.convertPoint(fromView: CGPoint(x: 828, y: 650))
         
     }
     
@@ -395,7 +500,7 @@ public class NivelUmViewController : UIViewController {
         let firstFrameTexture = andandoFramesParaBaixo[0]
         adm = SKSpriteNode(texture: firstFrameTexture)
         adm.setScale(1.2)
-        adm.position = scene.convertPoint(fromView: CGPoint(x: 600, y: 450))
+        adm.position = scene.convertPoint(fromView: CGPoint(x: 828, y: 650))
         
     }
     
@@ -456,7 +561,7 @@ public class NivelUmViewController : UIViewController {
     
     func buildEntregadorParaCima() {
         
-        let comecoNome = "ADM - Esquerda"
+        let comecoNome = "Entregador - Cima"
         let índices = [0,1,2,3]
         var imagensAnimação: [SKTexture] = []
         
@@ -474,7 +579,7 @@ public class NivelUmViewController : UIViewController {
     
     func buildEntregadorParaBaixo() {
         
-        let comecoNome = "ADM  - Direita"
+        let comecoNome = "Entregador  - Baixo"
         let índices = [0,1,2,3]
         var imagensAnimação: [SKTexture] = []
         
@@ -503,7 +608,7 @@ public class NivelUmViewController : UIViewController {
     
     func moveEntregador(location: CGPoint) {
         var multiplierForDirection: CGFloat = 1.0
-        let entregadorSpeed = viewSprite.frame.size.width / 22.0
+        let entregadorSpeed = viewSprite.frame.size.width / 16.0
         
         let moveDifference = CGPoint(x: location.x - entregador.position.x, y: location.y - entregador.position.y)
         let distanceToMove = sqrt(moveDifference.x * moveDifference.x + moveDifference.y * moveDifference.y)

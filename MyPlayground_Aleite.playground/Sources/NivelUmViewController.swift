@@ -12,9 +12,17 @@ public class NivelUmViewController : UIViewController {
     var andandoFramesParaCima: [SKTexture] = []
     var andandoFramesParaBaixo: [SKTexture] = []
     
+    var admComLeite = SKSpriteNode()
+    var admComEntregaAndandoParaCima: [SKTexture] = []
+    var admComEntregaAndandoParaBaixo: [SKTexture] = []
+    
     var entregador = SKSpriteNode()
     var entregadorAndandoParaCima: [SKTexture] = []
     var entregadorAndandoParaBaixo: [SKTexture] = []
+    
+    var EntregadorSemEntrega = SKSpriteNode()
+    var entregadorSemEntregaAndandoParaCima: [SKTexture] = []
+    var entregadorSemEntregaAndandoParaBaixo: [SKTexture] = []
     
     let maeView = UIImageView()
     let bebeView = UIImageView()
@@ -314,6 +322,8 @@ public class NivelUmViewController : UIViewController {
         buildAdmParaBaixo()
         buildEntregadorParaCima()
         buildEntregadorParaBaixo()
+        buildEntregadorParaBaixoSemEntrega()
+        buildAdmComLeite()
         
         scene.addChild(cenario)
         scene.addChild(lavaLouca)
@@ -325,6 +335,8 @@ public class NivelUmViewController : UIViewController {
         scene.addChild(centroSofa)
         scene.addChild(adm)
         scene.addChild(entregador)
+        scene.addChild(EntregadorSemEntrega)
+        scene.addChild(admComLeite)
         
     }
     
@@ -372,7 +384,10 @@ public class NivelUmViewController : UIViewController {
         labelMaeSeria.text = "1"
         
         if entregador.position == scene.convertPoint(fromView: CGPoint(x: 713, y: 320)) {
-            moveEntregador(location: scene.convertPoint(fromView: CGPoint(x: 1570, y: 950)))
+            entregador.removeAllActions()
+            EntregadorSemEntrega.setScale(1.2)
+            EntregadorSemEntrega.position = scene.convertPoint(fromView: CGPoint(x: 713, y: 320))
+            moveEntregadorSemEntrega(location: scene.convertPoint(fromView: CGPoint(x: 1570, y: 950)))
             moveAdm(location: scene.convertPoint(fromView: CGPoint(x: 730, y: 295)))
             
             maeView.isUserInteractionEnabled = true
@@ -382,7 +397,7 @@ public class NivelUmViewController : UIViewController {
         
         if entregador.position == scene.convertPoint(fromView: CGPoint(x: 1570, y: 950)) {
             
-            entregador.removeAllActions()
+            EntregadorSemEntrega.removeAllActions()
 
         }
 
@@ -395,8 +410,12 @@ public class NivelUmViewController : UIViewController {
     }
     
     @objc func handleTapInM(_ gesture: UIGestureRecognizer) {
+        adm.setScale(0)
+        admComLeite.setScale(1.2)
+        admComLeite.position = scene.convertPoint(fromView: CGPoint(x: 730, y: 295))
+        moveAdmComLeite(location: scene.convertPoint(fromView: CGPoint(x: 870, y: 360)))
         
-        moveAdm(location: scene.convertPoint(fromView: CGPoint(x: 870, y: 360)))
+        adm.removeAllActions()
         
         viewPontuacao.image = mudandoPontuacao[4]
         
@@ -414,8 +433,12 @@ public class NivelUmViewController : UIViewController {
     }
     
     @objc func handleTapInB(_ gesture: UIGestureRecognizer) {
-        
+        adm.setScale(1.2)
+        adm.position = scene.convertPoint(fromView: CGPoint(x: 870, y: 360))
         moveAdm(location: scene.convertPoint(fromView: CGPoint(x: 600, y: 450)))
+        
+        admComLeite.removeAllActions()
+        admComLeite.setScale(0)
         
         viewPontuacao.image = mudandoPontuacao[5]
         
@@ -525,6 +548,30 @@ public class NivelUmViewController : UIViewController {
         
     }
     
+    func buildAdmComLeite() {
+        
+        let comecoNome = "ADMComLeite  - Baixo"
+        let índices = [0,1,2,3]
+        var imagensAnimação: [SKTexture] = []
+        
+        for i in índices {
+            let umaPoseAdmDireita = SKTexture(imageNamed: "\(comecoNome)\(i)")
+            imagensAnimação.append(umaPoseAdmDireita)
+        }
+        
+        admComEntregaAndandoParaBaixo = imagensAnimação
+        
+        let firstFrameTexture = admComEntregaAndandoParaBaixo[0]
+        admComLeite = SKSpriteNode(texture: firstFrameTexture)
+        
+    }
+    
+    func animateAdmComEntregaParaBaixo() {
+        
+        admComLeite.run(SKAction.repeatForever(SKAction.animate(with: admComEntregaAndandoParaBaixo, timePerFrame: 0.2, resize: false, restore: true)), withKey:"andandoComEntregaParaBaixo")
+    
+    }
+    
     func moveAdm(location: CGPoint) {
         var multiplierForDirection: CGFloat = 1.0
         let admSpeed = viewSprite.frame.size.width / 22.0
@@ -567,6 +614,48 @@ public class NivelUmViewController : UIViewController {
         adm.removeAllActions()
     }
     
+    func moveAdmComLeite(location: CGPoint) {
+        var multiplierForDirection: CGFloat = 1.0
+        let admSpeed = viewSprite.frame.size.width / 22.0
+        
+        let moveDifference = CGPoint(x: location.x - admComLeite.position.x, y: location.y - admComLeite.position.y)
+        let distanceToMove = sqrt(moveDifference.x * moveDifference.x + moveDifference.y * moveDifference.y)
+        
+        let moveDuration = distanceToMove / admSpeed
+        
+        if (location.y > admComLeite.position.y) {
+            
+            if admComLeite.action(forKey: "andandoParaCima") == nil {
+                // Se moveDifference for maior que 0, multiplierForDirection = -1.0 senão, é igual a 1.0
+                multiplierForDirection = moveDifference.x > 0 ? -1.0 : 1.0
+                animateAdmParaCima()
+            }
+            
+        } else {
+            
+            if admComLeite.action(forKey: "andandoComEntregaParaBaixo") == nil {
+                multiplierForDirection = moveDifference.x < 0 ? -1.0 : 1.0
+                animateAdmComEntregaParaBaixo()
+            }
+        }
+        
+        admComLeite.xScale = abs(admComLeite.xScale) * multiplierForDirection
+        
+        let moveAction = SKAction.move(to: location, duration:(TimeInterval(moveDuration)))
+        
+        let doneAction = SKAction.run({ [weak self] in
+            self?.admComLeiteMoveEnded()
+        })
+        
+        let moveActionWithDone = SKAction.sequence([moveAction, doneAction])
+        admComLeite.run(moveActionWithDone, withKey:"admMovingComLeite")
+        
+    }
+    
+    func admComLeiteMoveEnded() {
+        admComLeite.removeAllActions()
+    }
+    
     func buildEntregadorParaCima() {
         
         let comecoNome = "Entregador - Cima"
@@ -605,6 +694,24 @@ public class NivelUmViewController : UIViewController {
         
     }
     
+    func buildEntregadorParaBaixoSemEntrega() {
+        
+        let comecoNome = "EntregadorSemEntrega  - Baixo"
+        let índices = [0,1,2,3]
+        var imagensAnimação: [SKTexture] = []
+        
+        for i in índices {
+            let umaPoseEntregadorDireita = SKTexture(imageNamed: "\(comecoNome)\(i)")
+            imagensAnimação.append(umaPoseEntregadorDireita)
+        }
+        
+        entregadorSemEntregaAndandoParaBaixo = imagensAnimação
+        
+        let firstFrameTexture = entregadorSemEntregaAndandoParaBaixo[0]
+        EntregadorSemEntrega = SKSpriteNode(texture: firstFrameTexture)
+        
+    }
+    
     func animateEntregadorParaCima() {
          entregador.run(SKAction.repeatForever(SKAction.animate(with: entregadorAndandoParaCima, timePerFrame: 0.2, resize: false, restore: true)), withKey:"entregadorAndandoParaCima")
      }
@@ -613,6 +720,12 @@ public class NivelUmViewController : UIViewController {
          
          entregador.run(SKAction.repeatForever(SKAction.animate(with: entregadorAndandoParaBaixo, timePerFrame: 0.2, resize: false, restore: true)), withKey:"entregadorAndandoParaBaixo")
      }
+    
+    
+    func animateEntregadorSemEntregaParaBaixo() {
+        
+        EntregadorSemEntrega.run(SKAction.repeatForever(SKAction.animate(with: entregadorSemEntregaAndandoParaBaixo, timePerFrame: 0.2, resize: false, restore: true)), withKey:"entregadorSemEntregaAndandoParaBaixo")
+    }
     
     func moveEntregador(location: CGPoint) {
         var multiplierForDirection: CGFloat = 1.0
@@ -633,7 +746,7 @@ public class NivelUmViewController : UIViewController {
             
         } else {
             
-            if adm.action(forKey: "entregadorAndandoParaBaixo") == nil {
+            if entregador.action(forKey: "entregadorAndandoParaBaixo") == nil {
                 multiplierForDirection = moveDifference.x < 0 ? -1.0 : 1.0
                 animateEntregadorParaBaixo()
             }
@@ -655,6 +768,48 @@ public class NivelUmViewController : UIViewController {
     func entregadorMoveEnded() {
         entregador.removeAllActions()
     }
+    
+    func moveEntregadorSemEntrega(location: CGPoint) {
+           var multiplierForDirection: CGFloat = 1.0
+           let entregadorSpeed = viewSprite.frame.size.width / 16.0
+           
+           let moveDifference = CGPoint(x: location.x - EntregadorSemEntrega.position.x, y: location.y - EntregadorSemEntrega.position.y)
+           let distanceToMove = sqrt(moveDifference.x * moveDifference.x + moveDifference.y * moveDifference.y)
+           
+           let moveDuration = distanceToMove / entregadorSpeed
+               
+        if (location.y > EntregadorSemEntrega.position.y) {
+            
+            if EntregadorSemEntrega.action(forKey: "entregadorAndandoParaCima") == nil {
+                // Se moveDifference for maior que 0, multiplierForDirection = -1.0 senão, é igual a 1.0
+                multiplierForDirection = moveDifference.x > 0 ? -1.0 : 1.0
+                animateEntregadorParaCima()
+            }
+            
+        } else {
+            
+            if EntregadorSemEntrega.action(forKey: "entregadorSemEntregaAndandoParaBaixo") == nil {
+                multiplierForDirection = moveDifference.x < 0 ? -1.0 : 1.0
+                animateEntregadorSemEntregaParaBaixo()
+            }
+        }
+        
+           EntregadorSemEntrega.xScale = abs(EntregadorSemEntrega.xScale) * multiplierForDirection
+           
+           let moveAction = SKAction.move(to: location, duration:(TimeInterval(moveDuration)))
+           
+           let doneAction = SKAction.run({ [weak self] in
+               self?.entregadorSemEntregaMoveEnded()
+           })
+           
+           let moveActionWithDone = SKAction.sequence([moveAction, doneAction])
+           EntregadorSemEntrega.run(moveActionWithDone, withKey:"entregadorSemEntregaMoving")
+           
+       }
+       
+       func entregadorSemEntregaMoveEnded() {
+           EntregadorSemEntrega.removeAllActions()
+       }
     
 }
 

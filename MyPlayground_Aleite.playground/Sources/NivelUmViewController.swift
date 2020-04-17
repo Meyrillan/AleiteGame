@@ -149,7 +149,7 @@ public class NivelUmViewController : UIViewController {
         labelMae.textColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         
         labelMaeFeliz.frame = CGRect(x: 1241, y: 68, width: 11, height: 21)
-        labelMaeFeliz.text = "0"
+        labelMaeFeliz.text = "1"
         labelMaeFeliz.font = sfRegularMaior
         labelMaeFeliz.textColor = #colorLiteral(red: 1.0, green: 1.0, blue: 1.0, alpha: 1.0)
         
@@ -368,6 +368,9 @@ public class NivelUmViewController : UIViewController {
         labelMissaoTres.alpha = 1
         labelMissaoTres.font = sfBoldMenor
         
+        labelMaeFeliz.text = "0"
+        labelMaeSeria.text = "1"
+        
         if entregador.position == scene.convertPoint(fromView: CGPoint(x: 713, y: 320)) {
             moveEntregador(location: scene.convertPoint(fromView: CGPoint(x: 1570, y: 950)))
             moveAdm(location: scene.convertPoint(fromView: CGPoint(x: 730, y: 295)))
@@ -405,6 +408,9 @@ public class NivelUmViewController : UIViewController {
         labelMissaoQuatro.alpha = 1
         labelMissaoQuatro.font = sfBoldMenor
         
+        labelMaeFeliz.text = "1"
+        labelMaeSeria.text = "0"
+        
     }
     
     @objc func handleTapInB(_ gesture: UIGestureRecognizer) {
@@ -436,6 +442,8 @@ public class NivelUmViewController : UIViewController {
         buttonContinuar.titleLabel?.font = sfBoldMenor
         buttonContinuar.backgroundColor = #colorLiteral(red: 1, green: 0.4862745098, blue: 0.5294117647, alpha: 1)
         buttonContinuar.layer.cornerRadius = 14
+        
+        labelBebeFeliz.text = "1"
         
     }
     

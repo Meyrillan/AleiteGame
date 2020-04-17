@@ -2,6 +2,7 @@
 
 import UIKit
 import PlaygroundSupport
+import AVFoundation
 
 let cfURL = Bundle.main.url(forResource: "SF-Pro-Rounded-Bold", withExtension: "otf")! as CFURL
 CTFontManagerRegisterFontsForURL(cfURL, CTFontManagerScope.process, nil)
@@ -24,7 +25,8 @@ class MyViewController : UIViewController {
     let imageWithAudio = UIImage(named: "ButtonWithAudio@2x.png")
     let imageNoAudio = UIImage(named: "ButtonNoAudio@2x.png")
     
-    var toggleAudio = 1
+    public var audioPlayer: AVAudioPlayer?
+    var toggleAudio = 2
     
     override func loadView() {
         
@@ -45,12 +47,13 @@ class MyViewController : UIViewController {
         
         buttonAudio.frame = CGRect(x: 1360, y: 176, width: 48, height: 48)
         
-        buttonAudio.setImage(imageWithAudio, for: .normal)
-        
+        buttonAudio.setImage(imageNoAudio, for: .normal)
+                
         view.addSubview(buttonPlay)
         view.addSubview(buttonPerfil)
         view.addSubview(buttonDoacoes)
         view.addSubview(buttonAudio)
+        
         
         self.view = view
     }
@@ -63,6 +66,7 @@ class MyViewController : UIViewController {
         buttonDoacoes.addTarget(self, action: #selector(vc.touchedButtonDoacoes), for: .touchUpInside)
         
         buttonAudio.addTarget(self, action: #selector(vc.touchedButtonAudio), for: .touchUpInside)
+        
     }
     
     @IBAction func touchedButtonPlay() {
@@ -78,16 +82,34 @@ class MyViewController : UIViewController {
     }
     
     @IBAction func touchedButtonAudio() {
+        audioPlayer = createPlayer(from: "Lo-Fi-Beat")
         if toggleAudio == 1 {
-            //            audio.play()
+            audioPlayer?.pause()
             toggleAudio = 2
             buttonAudio.setImage(imageNoAudio, for: .normal)
             
         } else {
-            //            audio.pause()
+            audioPlayer?.play()
+            audioPlayer?.numberOfLoops = -1
             toggleAudio = 1
             buttonAudio.setImage(imageWithAudio, for: .normal)
         }
+    }
+    
+    func createPlayer(from filename: String) -> AVAudioPlayer? {
+      guard let url = Bundle.main.url(forResource: filename, withExtension: "wav") else {
+          return nil
+      }
+      var player = AVAudioPlayer()
+
+      do {
+        try player = AVAudioPlayer(contentsOf: url)
+        player.prepareToPlay()
+      } catch {
+        print("Error loading \(url.absoluteString): \(error)")
+      }
+
+      return player
     }
     
 }
